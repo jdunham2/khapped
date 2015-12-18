@@ -15,16 +15,20 @@ body{
     text-align: right;
 }
 .publishers-container {
+    background-color: #F2EEEA;
+    border: 1px solid #B4B2AE;
+    border-radius: 4px;
+    padding: 1px;
 }
 .publisher-name {
     background-color: #F2EEEA;
-    border: 1px solid #B4B2AE;
     width: 100%;
     font-size: 1.35em;
+    height:35px;
 }
 .secondary-text {
     color: #B4B2AE;
-    font-size: .75em;
+    font-size: 14px;
 }
 .primary-text {
     color: #5F5E5D;
@@ -34,15 +38,17 @@ body{
     color: #E87162
 }
 
-.month {
-    height: 25px;
+.month, .other-items {
+    height: 50px;
     margin-top: 5px;
+    padding-top: 16px;
     border: 1px solid #B4B2AE;
+    font-size: 14px;
 }
 .order-details {
     padding-bottom: 5%;
 }
-.btn-done {
+.finished-btn {
     margin-top: 5%;
 }
 

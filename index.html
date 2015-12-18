@@ -24,27 +24,26 @@
         <div class="col-sm-12">
             <h3>Publishers <small>Tap a name to select</small></h3>
         </div>
-        <div class="col-sm-10 col-sm-offset-1 publishers-container
-                        interior-content-center">
+        <div class="col-sm-10 col-sm-offset-1 publishers-container interior-content-center">
             <div ng-repeat="user in data.users | filter:query | orderBy:[fname, lname]"
-                 ng-init="selected.language=user.orders[0].language; selected.item=user.orders[0].items[0].name"
-                 class="col-xs-12 publisher-name">
-
-                <!--JUST DID NG-INIT ABOVE FINISH THE VIEW BELOW NOW -->
+                 ng-init="selected=false; language=user.default_language; itemName=user.default_order"
+                 class="col-xs-12 publishers-container">
                 <!--Publisher Name-->
-                <div class="col-xs-12" ng-click="selected = !selected">
+                <div class="col-xs-12  publisher-name" ng-click="selected = !selected">
                     <strong>{{user.fname | uppercase}} {{ user.lname | uppercase}}</strong>
                 </div>
                 <!--Publisher Order // Hidden until name selected-->
                 <div class="col-xs-12 primary-text interior-content-left order-details" ng-show="selected">
                         <span class="col-xs-11 secondary-text">
                             {{language | uppercase}}
-                            <span class="pull-right secondary-text"><a href="">Edit</a></span>
+                            <br>
+                            {{itemName | uppercase}} {{user.orders.language.itemName.count}}
+                            <span class="pull-right secondary-text"><a href="">Edit Order</a></span>
                         </span>
                     <div class="row">
-                        <div ng-repeat="month in months"
+                        <div ng-repeat="(index, month) in months"
                              class="month col-xs-3 interior-content-center"
-                             ng-class="{received:received}"
+                             ng-class="{received: received}"
                              ng-click="received = !received">
                             <span class="secondary-text" ng-class="{received:received}">
                                 <span>{{month}}</span>
@@ -52,7 +51,29 @@
                         </div>
                     </div>
                     <div class="row">
-                        <button class="col-xs-4 col-xs-offset-4 btn btn-default btn-done" ng-click="selected=!selected">Done</button>
+                        <br>
+                        <span class="col-xs-11 secondary-text">OTHER ITEMS</span>
+                    </div>
+                    <div class="row">
+                        <div ng-repeat="(language, items) in user.orders"
+                             class="other-items col-xs-3 interior-content-center"
+                             ng-click="{itemName:items}">
+                            {{items}}
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div ng-repeat="(otherLanguage, items) in user.orders"
+                             class="other-items col-xs-3 interior-content-center"
+                             ng-click="language=otherLanguage">
+                            {{otherLanguage}}
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <button class="col-xs-4 col-xs-offset-4 btn btn-default finished-btn"
+                                ng-click="selected=!selected">Done</button>
                     </div>
                 </div>
             </div>
