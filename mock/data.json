@@ -1,0 +1,50 @@
+{
+  "languages":["english", "russian", "chinese"],
+  "available_orders":[
+    {"name":"Watchtower", "abbreviation":"WAT", "img":"images/wat_icon.jpg"},
+    {"name":"CDs", "abbreviation":"CDS", "img":"images/cds_icon.jpg"},
+    {"name":"Simplified", "abbreviation":"SIM", "img":"images/sim_icon.jpg"},
+    {"name":"Large Print", "abbreviation":"L.P.", "img":"images/lp_icon.jpg"}
+  ],
+  "users":[
+    {
+      "fname":"Jeshua",
+      "lname":"Dunham",
+      "default_language":"english",
+      "orders": {
+        "english": {
+          "Watchtower": {"count":1, "months_received":[0,1,2,4,5,6]},
+          "CDs": {"count":1, "months_received":[1,2,4,5,6]}
+        }
+      }
+    },
+    {
+      "fname":"Mike",
+      "lname":"Kelly",
+      "default_language":"english",
+      "orders": {
+        "english": {
+          "Watchtower": {"count":2, "months_received":[0,1,2,4,5,6]},
+          "Simplified": {"count":1, "months_received":[1,2,4,5,6]}
+        },
+        "chinese": {
+          "Watchtower": {"count":1, "months_received":[0,1,2,4,5,6]}
+        }
+      }
+    },
+    {
+      "fname":"Joe",
+      "lname":"Pfeiffer",
+      "default_language":"russian",
+      "orders": {
+        "english": {
+          "Watchtower": {"count":1, "months_received":[0,1,2,4,5,6]},
+          "CDs": {"count":1, "months_received":[1,2,4,5,6]}
+        },
+        "russian": {
+          "Watchtower": {"count":2, "months_received":[0,1,2,4,5,6]}
+        }
+      }
+    }
+  ]
+}

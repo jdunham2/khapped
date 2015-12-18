@@ -1,0 +1,63 @@
+body{
+    background-color:#B4B2AE;
+    color: #5F5E5D;
+}
+#search-box {
+    margin: 5%
+}
+.interior-content-center {
+    text-align: center;
+}
+.interior-content-left {
+    text-align: left;
+}
+.interior-content-right {
+    text-align: right;
+}
+.publishers-container {
+}
+.publisher-name {
+    background-color: #F2EEEA;
+    border: 1px solid #B4B2AE;
+    width: 100%;
+    font-size: 1.35em;
+}
+.secondary-text {
+    color: #B4B2AE;
+    font-size: .75em;
+}
+.primary-text {
+    color: #5F5E5D;
+    font-size: 1em;
+}
+.accented-text {
+    color: #E87162
+}
+
+.month {
+    height: 25px;
+    margin-top: 5px;
+    border: 1px solid #B4B2AE;
+}
+.order-details {
+    padding-bottom: 5%;
+}
+.btn-done {
+    margin-top: 5%;
+}
+
+.received {
+    background-color: #B4B2AE;
+    color: #5F5E5D;
+    border-color: #5F5E5D;
+}
+
+/*
+color palette:
+E87162 font: accented (red)
+5F5E5D font: main
+F2EEEA background color
+B4B2AE font: secondary (grey)
+E24A37 ??: deeper red
+http://www.colourlovers.com/digital-art/trends/branding/7883/Delicious_Logo
+*/
