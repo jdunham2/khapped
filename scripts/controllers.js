@@ -11,6 +11,7 @@ controllers.controller('mainCtrl', function($scope){
 controllers.controller('congCtrl', function($scope, dataService) {
     dataService.getKHData(function(response){
         $scope.data = response.data;
+        $scope.availableOrders = response.data.available_orders;
         console.log($scope.data);
     });
 })

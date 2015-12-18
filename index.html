@@ -36,14 +36,15 @@
                 <div class="col-xs-12 primary-text interior-content-left order-details" ng-show="selected">
                         <span class="col-xs-11 secondary-text">
                             {{language | uppercase}}
+                            <span class="pull-right secondary-text"><a href="">Edit Order</a></span>
                             <br>
                             {{itemName | uppercase}} {{user.orders.language.itemName.count}}
-                            <span class="pull-right secondary-text"><a href="">Edit Order</a></span>
                         </span>
                     <div class="row">
                         <div ng-repeat="(index, month) in months"
                              class="month col-xs-3 interior-content-center"
                              ng-class="{received: received}"
+                             ng-init="received = months.indexOf(index)"
                              ng-click="received = !received">
                             <span class="secondary-text" ng-class="{received:received}">
                                 <span>{{month}}</span>
@@ -52,22 +53,30 @@
                     </div>
                     <div class="row">
                         <br>
-                        <span class="col-xs-11 secondary-text">OTHER ITEMS</span>
-                    </div>
-                    <div class="row">
-                        <div ng-repeat="(language, items) in user.orders"
-                             class="other-items col-xs-3 interior-content-center"
-                             ng-click="{itemName:items}">
-                            {{items}}
-
+                        <span class="col-xs-11 secondary-text">ITEMS</span>
+                        <div class="col-xs-11">
+                            <div class="row">
+                                <div ng-repeat="(language, items) in user.orders"
+                                     class="other-items col-xs-3 interior-content-center">
+                                    <div ng-repeat="(name, info) in items"
+                                         class="other-items col-xs-12 interior-content-center"
+                                         ng-click="$parent.itemName = name">
+                                        {{name}}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div ng-repeat="(otherLanguage, items) in user.orders"
-                             class="other-items col-xs-3 interior-content-center"
-                             ng-click="language=otherLanguage">
-                            {{otherLanguage}}
-
+                    <div class="row" ng-show="user.orders">
+                        <br>
+                        <span class="col-xs-11 secondary-text">LANGUAGES</span>
+                        <div class="col-xs-11">
+                            <div ng-repeat="(otherLanguage, items) in user.orders"
+                                 class="other-items col-xs-3 interior-content-center"
+                                 ng-click="$parent.language = otherLanguage;received = !received"
+                                 ng-class="{received: $parent.language == otherLanguage}">
+                                {{otherLanguage}}
+                            </div>
                         </div>
                     </div>
 
