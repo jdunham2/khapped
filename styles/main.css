@@ -26,16 +26,17 @@ body{
     font-size: 1.35em;
     height:35px;
 }
-.secondary-text {
+.secondaryText {
     color: #B4B2AE;
     font-size: 14px;
 }
-.primary-text {
+.primaryText {
     color: #5F5E5D;
     font-size: 1em;
 }
-.accented-text {
-    color: #E24A37
+.accentedText {
+    font-size: 1.25em;
+    color: #CE534D
 }
 
 .month, .other-items {
@@ -53,14 +54,22 @@ body{
 }
 
 .received {
+    background-color: #5F5E5D;
+    color: #B4B2AE;
+    border-color: #B4B2AE;
+}
+.unAvailable {
     background-color: #B4B2AE;
     color: #5F5E5D;
     border-color: #5F5E5D;
 }
+.selected {
+    border:3px solid #64B6B1;
+}
 
 /*
 color palette:
-E87162 font: accented (red)
+CE534D font: accented (red)
 5F5E5D font: main
 F2EEEA background color
 B4B2AE font: secondary (grey)

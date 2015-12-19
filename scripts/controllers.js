@@ -15,32 +15,65 @@ controllers.controller('congCtrl', function($scope, dataService) {
         console.log($scope.data);
     });
 
+    $scope.allAvailableItems = function(){
+        return $scope.data.available_orders;
+    }
+
     $scope.getDefaultLanguage = function(user) {
-        console.log("DefaultLanguage: " + user.orders[0].language)
-        return user.default_language || user.orders[0].language;
+        var length = user.orders.length;
+        for (var i = 0; i<length; i++) {
+            if (user.orders[i].language == $scope.appDefaultLang()) {
+                return user.orders[i].language;
+            }
+        }
+        return user.orders[0].language;
     };
 
-    $scope.getDefaultItem = function(user) {
-        console.log("DefaultItem: " + user.orders[0].items[0].name)
-        return user.default_order || user.orders[0].items[0].name;
+    $scope.getDefaultItem = function(user, language) {
+        var items = $scope.userLangItems(user, language);
+        console.log("DefaultItem: " + items[0].name)
+        return items[0].name;
+    };
+
+    $scope.appDefaultLang = function (language) {
+        return $scope.data.default_language;
     };
 
     $scope.hasMoreThanOneLanguage = function(user) {
         if (user.orders.length > 1)
             return true;
         return false;
-    }
-    $scope.itemReceived = function(user, itemName, index) {
-        var ordersLength = user.orders.length;
-        for (var i=0; i < ordersLength; i++) {
-            var itemsLength = user.orders[i].items.length;
-            for (var j=0; j<itemsLength; j++) {
-                if (user.orders[i].items[j].months_received.indexOf(index) > -1){
-                    return true
-                }
-                return false
+    };
+
+    $scope.userLangItems = function (user, language) {
+        for (var i = 0; i < user.orders.length; i++) {
+            if (user.orders[i].language == language)
+                return user.orders[i].items;
+        }
+        return console.log("ITEMS NOT FOUND FOR "+user.fname+" "+language);
+    };
+
+    $scope.userOrderedThisLangItem = function (user, lang, item) {
+        var userItems = $scope.userLangItems(user, lang);
+        for (var i=0; i<userItems.length; i++) {
+            if (item.name == userItems[i].name) {
+                return true
             }
         }
+        return false;
+    };
+
+    $scope.userReceivedThisLangItem = function(user, lang, itemName, index) {
+        var items = $scope.userLangItems(user, lang);
+        for (var j=0; j<items.length; j++) {
+            if (items[j].name == itemName) {
+                if (items[j].months_received.indexOf(index) > -1) {
+                    return true;
+                }
+                return false;
+            }
+        }
+        return console.log('SOMETHING WENT WRONG')
     };
     $scope.getAllLanguages = function(user) {
         var allLanguages = [];
