@@ -26,7 +26,7 @@
         </div>
         <div class="col-sm-10 col-sm-offset-1 publishers-container interior-content-center">
             <div ng-repeat="user in data.users | filter:query | orderBy:[fname, lname]"
-                 ng-init="selected=false; language=user.default_language; itemName=user.default_order"
+                 ng-init="selected=false; language=getDefaultLanguage(user); itemName=getDefaultItem(user)"
                  class="col-xs-12 publishers-container">
                 <!--Publisher Name-->
                 <div class="col-xs-12  publisher-name" ng-click="selected = !selected">
@@ -44,7 +44,7 @@
                         <div ng-repeat="(index, month) in months"
                              class="month col-xs-3 interior-content-center"
                              ng-class="{received: received}"
-                             ng-init="received = user.orders[0].items[0].months_received.indexOf(index)"
+                             ng-init="received = itemReceived(user, itemName, index)"
                              ng-click="received = !received">
                             <span class="secondary-text" ng-class="{received:received}">
                                 <span>{{month}}</span>
@@ -53,8 +53,8 @@
                     </div>
                     <div class="row">
                         <br>
-                        <span class="col-xs-11 secondary-text">ITEMS</span>
-                        <div class="col-xs-11">
+                        <span class="col-xs-12 secondary-text">ITEMS</span>
+                        <div class="col-xs-12">
                             <div ng-repeat="item in user.orders[0].items"
                                  class="other-items col-xs-3 interior-content-center"
                                  ng-click="$parent.itemName=item.name;received = !received"
@@ -63,14 +63,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" ng-show="user.orders">
+                    <div class="row" ng-show="hasMoreThanOneLanguage(user)">
                         <br>
                         <span class="col-xs-11 secondary-text">LANGUAGES</span>
                         <div class="col-xs-11">
                             <div class="other-items col-xs-3 interior-content-center"
-                                 ng-click="$parent.language = otherLanguage;received = !received"
-                                 ng-class="{received: $parent.language == otherLanguage}">
-                                {{user.orders[0].language}}
+                                 ng-repeat="anotherLanguage in getAllLanguages(user)"
+                                 ng-click="$parent.language = anotherLanguage;received = !received"
+                                 ng-class="{received: $parent.language == anotherLanguage}">
+                                {{anotherLanguage}}
                             </div>
                         </div>
                     </div>

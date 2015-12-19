@@ -15,7 +15,7 @@
       "orders": [
         {"language":"English",
           "items":[
-            {"name":"Watchtower", "count":1, "months_received":[0,1,2,4,5,6]},
+            {"name":"Watchtower", "count":1, "months_received":[0,1,2,3,4,5,6]},
             {"name": "CDs", "count":1, "months_received":[0,1,2,4,5,6]}
           ]
         }
@@ -29,13 +29,13 @@
       "orders": [
         {"language":"English",
           "items":[
-            {"name":"Watchtower", "count":1, "months_received":[0,1,2,4,5,6]},
+            {"name":"Watchtower", "count":1, "months_received":[0,1,2,3,4]},
             {"name": "Simplified", "count":1, "months_received":[0,1,2,4,5,6]}
           ]
         },
         {"language":"Chinese",
           "items": [
-            {"name":"Watchtower", "count":1, "months_received":[0,1,2,4,5,6]}
+            {"name":"Watchtower", "count":1, "months_received":[0,1,2,3]}
           ]
         }
       ]
