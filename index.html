@@ -26,60 +26,47 @@
         </div>
         <div class="col-sm-10 col-sm-offset-1 publishers-container interior-content-center">
             <div ng-repeat="user in data.users | filter:query | orderBy:[fname, lname]"
-                 ng-init="nameSelected=false; language=getDefaultLanguage(user); itemName=getDefaultItem(user, language)"
+                 ng-init="userInit(user, language)"
                  class="col-xs-12 publishers-container">
                 <!--Publisher Name-->
-                <div class="col-xs-12  publisher-name" ng-click="nameSelected = !nameSelected">
-                    <strong>{{user.fname | uppercase}} {{ user.lname | uppercase}}</strong>
+                <div class="col-xs-12  publisher-name" ng-click="nameSelected = true" ng-class="{hasPending: pendingPickup(user).length > 0}">
+                    {{user.fname | uppercase}} {{ user.lname | uppercase}}
                 </div>
                 <!--Publisher Order // Hidden until name selected-->
                 <div class="col-xs-12 primaryText interior-content-left order-details" ng-show="nameSelected">
-                        <span class="col-xs-11 secondary-Text">
-                            <span ng-class="{accentedText: language != appDefaultLang()}">
-                                {{language | uppercase}}</span>
-                            <span class="pull-right secondary-Text"><a href="">Edit Order</a></span>
-                            <br>
-                            {{itemName | uppercase}} {{user.orders.language.itemName.count}}
-                        </span>
-                    <div class="row">
-                        <div ng-repeat="(index, month) in months"
-                             class="month col-xs-3 interior-content-center"
-                             ng-init = "received = userReceivedThisLangItem(user, language, itemName, index)"
-                             ng-class="{received:received}"
-                             ng-click="received = !received">
-                            {{month}}
-                        </div>
-                    </div>
+                    <span class="col-xs-11 secondary-Text">
+                        <span class="pull-right secondary-Text"><a href="">Customize Order</a></span>
+                        <br>
+                    </span>
+
                     <div class="row">
                         <br>
-                        <span class="col-xs-12 secondary-Text">ITEMS</span>
+                        <span class="col-xs-12 secondary-Text "></span>
                         <div class="col-xs-12">
-                            <div ng-repeat="item in allAvailableItems()"
-                                 ng-init="isItemOrdered=userOrderedThisLangItem(user, language, item); unavailable=!isItemOrdered;">
-                                <div class="other-items col-xs-3 interior-content-center"
-                                     ng-click="isItemOrdered?$parent.itemName=item.name:null;"
-                                     ng-class="{selected: $parent.itemName==item.name, unAvailable: unavailable}">
-                                    <span>{{item.name}}</span>
+                            <h4>New Items:<small> Touch an item to remove it.</small></h4>
+
+                            <div ng-repeat="item in getAllItems(user)">
+                                <div ng-repeat="month in notReceived(item.months_received)"
+                                     class="col-sm-5 interior-content-center itemBlock">
+
+                                    <div ng-hide="removed" ng-click="removed=true">
+                                        {{monthName(month)}}
+                                        {{item.name}}
+                                        ({{item.count}}) {{showLanguage(item.language)}}
+                                    </div>
+                                    <div ng-show="removed" ng-click="removed=false">
+                                        Publisher received this item. Touch to undo.
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" ng-show="hasMoreThanOneLanguage(user)">
-                        <br>
-                        <span class="col-xs-11 secondary-Text">LANGUAGES</span>
-                        <div class="col-xs-11">
-                            <div class="other-items col-xs-3 interior-content-center"
-                                 ng-repeat="anotherLanguage in getAllLanguages(user)"
-                                 ng-click="$parent.language = anotherLanguage;received = !received; $parent.itemName = getDefaultItem(user, anotherLanguage)"
-                                 ng-class="{selected: $parent.language == anotherLanguage}">
-                                {{anotherLanguage}}
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <button class="col-xs-4 col-xs-offset-4 btn btn-default finished-btn"
-                                ng-click="nameSelected=!nameSelected">Done</button>
+                        <button class="col-xs-2 col-xs-offset-3 btn btn-default finished-btn"
+                                ng-click="nameSelected=!nameSelected">Save</button>
+                        <button class="col-xs-2 col-xs-offset-2 btn btn-default finished-btn"
+                                ng-click="nameSelected=!nameSelected">Cancel</button>
                     </div>
                 </div>
             </div>

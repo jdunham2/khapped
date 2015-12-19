@@ -15,11 +15,81 @@ controllers.controller('congCtrl', function($scope, dataService) {
         console.log($scope.data);
     });
 
-    $scope.allAvailableItems = function(){
-        return $scope.data.available_orders;
-    }
+    $scope.userInit = function (user, language) {
+        $scope.nameSelected=false;
+        $scope.language=getDefaultLanguage(user);
+        $scope.itemName=getDefaultItem(user, $scope.language);
+    };
 
-    $scope.getDefaultLanguage = function(user) {
+    var currentMonth = 6;
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+
+    $scope.notReceived = function (months_received) {
+        var return_months = [];
+        var months_not_received = inverse(months_received);
+        for (var i=0; i<months_not_received.length; i++) {
+            if (months_not_received[i]<currentMonth) {
+                return_months.push(months_not_received[i]);
+            }
+        }
+        return return_months
+    };
+
+    var inverse = function (months) {
+        var inverse = [0,1,2,3,4,5,6,7,8,9,10,11];
+        for (var i=0; i<months.length; i++) {
+            var index = inverse.indexOf(months[i]);
+            if (index != -1) {
+                delete inverse[index];
+            }
+        }
+        return inverse;
+    };
+
+    $scope.monthName = function (month) {
+        return months[month];
+    };
+
+    $scope.findPendingMonths = function (user) {
+        var test = nonScopeLogic(user);
+        return test;
+    };
+
+    var nonScopeLogic = function () {
+        for (var k=0; k<$scope.data.users; k++) {
+            var user = $scope.data.users[k];
+            var items = getAllItems(user);
+            var newItem = {};
+            for (var j = 0; j < items.length; j++) {
+                var item = items[j];
+                for (var i = 0; i < currentMonth; i++) {
+                    if (item.months_received.indexOf(i) === -1) {
+                        var name = j + i;
+                        newItem[name] = {};
+                        newItem[name]["name"] = item.name;
+                        newItem[name]["count"] = item.count;
+                        newItem[name]["language"] = item.language;
+                        newItem[name]["month"] = months[i];
+                    }
+                }
+            }
+        }
+        console.log(newItem);
+        return newItem;
+    }
+    $scope.getAllItems = function (user) {
+        var allItems = [];
+        for (var i=0; i<user.orders.length; i++) {
+            for (var j=0; j<user.orders[i].items.length; j++) {
+                user.orders[i].items[j]['language'] = user.orders[i].language;
+                allItems.push(user.orders[i].items[j]);
+            }
+        }
+        return allItems;
+    };
+
+    var getDefaultLanguage = function(user) {
         var length = user.orders.length;
         for (var i = 0; i<length; i++) {
             if (user.orders[i].language == $scope.appDefaultLang()) {
@@ -29,7 +99,13 @@ controllers.controller('congCtrl', function($scope, dataService) {
         return user.orders[0].language;
     };
 
-    $scope.getDefaultItem = function(user, language) {
+    $scope.showLanguage = function(language) {
+        if (language != $scope.appDefaultLang())
+            return language;
+        return '';
+    }
+
+    var getDefaultItem = function(user, language) {
         var items = $scope.userLangItems(user, language);
         console.log("DefaultItem: " + items[0].name)
         return items[0].name;
@@ -53,7 +129,7 @@ controllers.controller('congCtrl', function($scope, dataService) {
         return console.log("ITEMS NOT FOUND FOR "+user.fname+" "+language);
     };
 
-    $scope.userOrderedThisLangItem = function (user, lang, item) {
+    var userOrderedThisLangItem = function (user, lang, item) {
         var userItems = $scope.userLangItems(user, lang);
         for (var i=0; i<userItems.length; i++) {
             if (item.name == userItems[i].name) {
