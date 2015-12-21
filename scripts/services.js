@@ -10,13 +10,17 @@ services.service('dataService', function($http) {
         $http.get('mock/data.json')
         .then(callback);
     };
-    this.postData = function(postData, callback){
-        console.log(postData);
-        $http({
-            method  : 'POST',
-            url     : 'mock/data.json',
-            data    : postData,
-            headers : {'Content-Type': 'application/x-www-form-urlencoded'}
-        }).then(callback);
+    this.saveData = function(postData, callback){
+        $http.post('mock/data.json',postData)
+            .then(callback);
     };
+    //this.saveData = function(postData, callback){
+    //    console.log(postData);
+    //    $http({
+    //        method  : 'POST',
+    //        url     : 'mock/data.json',
+    //        data    : postData,
+    //        headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+    //    }).then(callback);
+    //};
 });

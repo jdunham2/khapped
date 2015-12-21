@@ -26,7 +26,7 @@
         </div>
         <div class="col-sm-10 col-sm-offset-1 publishers-container interior-content-center">
             <div ng-repeat="user in data.users | filter:query | orderBy:[fname, lname]"
-                 ng-init="userInit(user, language); hasPendingItems= hasPendingItems(user)"
+                 ng-init="hasPendingItems= hasPendingItems(user)"
                  class="col-xs-12 publishers-container">
                 <!--Publisher Name-->
                 <div class="col-xs-12  publisher-name"
@@ -57,12 +57,12 @@
                             <div ng-repeat="item in getAllItems(user)">
                                 <div ng-repeat="month in monthsNotReceived(item.months_received)"
                                      class="col-sm-5 interior-content-center itemBlock"
-                                     ng-click="removed=!removed;">
+                                     ng-click="removed=!removed;receiveMonth(user, item.name, month)">
 
                                     <div ng-hide="removed">
                                         {{monthName(month)}}
                                         {{item.name}}
-                                        ({{item.count}}) {{showAsForeignLanguage(item.language)}}
+                                        ({{item.count}}) {{showIfForeignLanguage(item.language)}}
                                     </div>
                                     <div ng-show="removed">
                                         Marked as Received. Touch to undo.
@@ -74,7 +74,7 @@
 
                     <div class="row">
                         <button class="col-xs-2 col-xs-offset-3 btn btn-default finished-btn"
-                                ng-click="nameSelected=!nameSelected">Save</button>
+                                ng-click="nameSelected=!nameSelected; save(user)">Save</button>
                         <button class="col-xs-2 col-xs-offset-2 btn btn-default finished-btn"
                                 ng-click="nameSelected=!nameSelected">Cancel</button>
                     </div>
