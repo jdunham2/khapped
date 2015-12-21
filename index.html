@@ -38,7 +38,11 @@
                 <div class="col-xs-12 primaryText interior-content-left order-details" ng-show="nameSelected">
                     <span class="col-xs-11">
                         <span class="pull-right"><a href="">Customize Order</a></span>
-                        <span ng-show="hasPendingItems"><h4>New Items: <small>tap an item to remove it</small></h4></span>
+                        <div class="row" ng-show="hasPendingItems">
+                            <div class="col-xs-12" >
+                                <h4>New Items: <small>tap an item to remove it</small></h4></span>
+                            </div>
+                        </div>
                         <div class="row" ng-hide="hasPendingItems">
                             <div class="col-xs-12 interior-content-center" >
                                 <h4>No New Items!</h4>
