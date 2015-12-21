@@ -20,7 +20,7 @@
         </div>
     </div>
     <!--Publisher List-->
-    <div class="row" ng-controller="congCtrl">
+    <div class="row">
         <div class="col-sm-12">
             <h3>Publishers <small>Tap a name to select</small></h3>
         </div>
@@ -29,8 +29,10 @@
                  ng-init="userInit(user, language)"
                  class="col-xs-12 publishers-container">
                 <!--Publisher Name-->
-                <div class="col-xs-12  publisher-name" ng-click="nameSelected = true" ng-class="{hasPending: pendingPickup(user).length > 0}">
-                    {{user.fname | uppercase}} {{ user.lname | uppercase}}
+                <div class="col-xs-12  publisher-name"
+                     ng-click="nameSelected = true"
+                     ng-class="{hasPending: hasPendingItems(user)}">
+                    {{user.fname | uppercase}} {{ user.lname | uppercase}} {{showMonthsBehindCount(user)}}
                 </div>
                 <!--Publisher Order // Hidden until name selected-->
                 <div class="col-xs-12 primaryText interior-content-left order-details" ng-show="nameSelected">
@@ -43,18 +45,19 @@
                         <br>
                         <span class="col-xs-12 secondary-Text "></span>
                         <div class="col-xs-12">
-                            <h4>New Items:<small> Touch an item to remove it.</small></h4>
+                            {{ newItemsMessage() }}
 
                             <div ng-repeat="item in getAllItems(user)">
-                                <div ng-repeat="month in notReceived(item.months_received)"
-                                     class="col-sm-5 interior-content-center itemBlock">
+                                <div ng-repeat="month in monthsNotReceived(item.months_received)"
+                                     class="col-sm-5 interior-content-center itemBlock"
+                                     ng-click="removed=!removed;">
 
-                                    <div ng-hide="removed" ng-click="removed=true">
+                                    <div ng-hide="removed">
                                         {{monthName(month)}}
                                         {{item.name}}
-                                        ({{item.count}}) {{showLanguage(item.language)}}
+                                        ({{item.count}}) {{showAsForeignLanguage(item.language)}}
                                     </div>
-                                    <div ng-show="removed" ng-click="removed=false">
+                                    <div ng-show="removed">
                                         Publisher received this item. Touch to undo.
                                     </div>
                                 </div>

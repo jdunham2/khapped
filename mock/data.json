@@ -14,7 +14,7 @@
       "orders": [
         {"language":"English",
           "items":[
-            {"name":"Watchtower", "count":1, "months_received":[0,1,2,3,4,5,6]}
+            {"name":"Watchtower", "count":1, "months_received":[0,1,2,3,4]}
           ]
         }
       ]
@@ -44,6 +44,17 @@
         {"language":"English",
           "items":[
             {"name": "CDs", "count":1, "months_received":[0,1,2,3,4]}
+          ]
+        }
+      ]
+    },
+    {
+      "fname":"Craig",
+      "lname":"Ballinger",
+      "orders": [
+        {"language":"English",
+          "items":[
+            {"name":"Watchtower", "count":1, "months_received":[0,1,2,3,4,5]}
           ]
         }
       ]

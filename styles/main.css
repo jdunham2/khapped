@@ -24,7 +24,8 @@ body{
     background-color: #F2EEEA;
     width: 100%;
     font-size: 1.35em;
-    height:35px;
+    height: 50px;
+    padding-top: 12px;
 }
 .secondaryText {
     color: #B4B2AE;
@@ -64,8 +65,12 @@ body{
     height: 50px;
     margin: 10px;
     padding-top: 16px;
-    border: 1px solid #B4B2AE;
+    background-color: #B4B2AE;
+    color: #5F5E5D;
+    border-color: #B4B2AE;
+    /*border: 1px solid #B4B2AE;*/
     font-size: 14px;
+    border-radius: 5px;
 }
 
 .hasPending {
