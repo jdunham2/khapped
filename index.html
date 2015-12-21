@@ -26,18 +26,24 @@
         </div>
         <div class="col-sm-10 col-sm-offset-1 publishers-container interior-content-center">
             <div ng-repeat="user in data.users | filter:query | orderBy:[fname, lname]"
-                 ng-init="userInit(user, language)"
+                 ng-init="userInit(user, language); hasPendingItems= hasPendingItems(user)"
                  class="col-xs-12 publishers-container">
                 <!--Publisher Name-->
                 <div class="col-xs-12  publisher-name"
                      ng-click="nameSelected = true"
-                     ng-class="{hasPending: hasPendingItems(user)}">
+                     ng-class="{hasPending: hasPendingItems}">
                     {{user.fname | uppercase}} {{ user.lname | uppercase}} {{showMonthsBehindCount(user)}}
                 </div>
                 <!--Publisher Order // Hidden until name selected-->
                 <div class="col-xs-12 primaryText interior-content-left order-details" ng-show="nameSelected">
-                    <span class="col-xs-11 secondary-Text">
-                        <span class="pull-right secondary-Text"><a href="">Customize Order</a></span>
+                    <span class="col-xs-11">
+                        <span class="pull-right"><a href="">Customize Order</a></span>
+                        <span ng-show="hasPendingItems"><h4>New Items: <small>tap an item to remove it</small></h4></span>
+                        <div class="row" ng-hide="hasPendingItems">
+                            <div class="col-xs-12 interior-content-center" >
+                                <h4>No New Items!</h4>
+                            </div>
+                        </div>
                         <br>
                     </span>
 
