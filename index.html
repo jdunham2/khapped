@@ -30,7 +30,7 @@
                  class="col-xs-12 publishers-container">
                 <!--Publisher Name-->
                 <div class="col-xs-12  publisher-name"
-                     ng-click="nameSelected = true"
+                     ng-click="nameSelected = !nameSelected"
                      ng-class="{hasPending: hasPendingItems}">
                     {{user.fname | uppercase}} {{ user.lname | uppercase}} {{showMonthsBehindCount(user)}}
                 </div>
@@ -53,10 +53,7 @@
 
                     <div class="row">
                         <br>
-                        <span class="col-xs-12 secondary-Text "></span>
                         <div class="col-xs-12">
-                            {{ newItemsMessage() }}
-
                             <div ng-repeat="item in getAllItems(user)">
                                 <div ng-repeat="month in monthsNotReceived(item.months_received)"
                                      class="col-sm-5 interior-content-center itemBlock"
@@ -68,7 +65,7 @@
                                         ({{item.count}}) {{showAsForeignLanguage(item.language)}}
                                     </div>
                                     <div ng-show="removed">
-                                        Publisher received this item. Touch to undo.
+                                        Marked as Received. Touch to undo.
                                     </div>
                                 </div>
                             </div>
