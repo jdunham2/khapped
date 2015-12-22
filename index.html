@@ -6,9 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="styles/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="styles/main.css" rel="stylesheet" type="text/css">
+    <!-- AngularJS -->
+    <script src="vendor/angular.js" type="text/javascript"></script>
+    <!-- Firebase -->
+    <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+    <!-- AngularFire -->
+    <script src="https://cdn.firebase.com/libs/angularfire/1.1.3/angularfire.min.js"></script>
 </head>
 <body ng-controller="mainCtrl">
 <div class="container">
+    {{data[3]|json}}
     <!--Navigation Menu-->
 
     <!--Search Bar-->
@@ -25,7 +32,7 @@
             <h3>Publishers <small>Tap a name to select</small></h3>
         </div>
         <div class="col-sm-10 col-sm-offset-1 publishers-container interior-content-center">
-            <div ng-repeat="user in data.users | filter:query | orderBy:[fname, lname]"
+            <div ng-repeat="user in users | filter:query | orderBy:[fname, lname]"
                  ng-init="hasPendingItems= hasPendingItems(user)"
                  class="col-xs-12 publishers-container">
                 <!--Publisher Name-->
@@ -57,7 +64,7 @@
                             <div ng-repeat="item in getAllItems(user)">
                                 <div ng-repeat="month in monthsNotReceived(item.months_received)"
                                      class="col-sm-5 interior-content-center itemBlock"
-                                     ng-click="removed=!removed;receiveMonth(user, item.name, month)">
+                                     ng-click="removed=!removed;queueReceiveMonth(user, item.name, item.language, month)">
 
                                     <div ng-hide="removed">
                                         {{monthName(month)}}
@@ -74,7 +81,7 @@
 
                     <div class="row">
                         <button class="col-xs-2 col-xs-offset-3 btn btn-default finished-btn"
-                                ng-click="nameSelected=!nameSelected; save(user)">Save</button>
+                                ng-click="nameSelected=!nameSelected; submit(user)">Save</button>
                         <button class="col-xs-2 col-xs-offset-2 btn btn-default finished-btn"
                                 ng-click="nameSelected=!nameSelected">Cancel</button>
                     </div>
@@ -86,7 +93,6 @@
 
 </div>
 
-<script src="vendor/angular.js" type="text/javascript"></script>
 <script src="scripts/app.js" type="text/javascript"></script>
 <script src="scripts/controllers.js" type="text/javascript"></script>
 <script src="scripts/services.js" type="text/javascript"></script>
