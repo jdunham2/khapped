@@ -1,16 +1,37 @@
 'use strict';
 
 var controllers = angular.module('litApp.controllers', []);
+var USE_LOCAL_DB = true;
 
-controllers.controller('mainCtrl', function($scope, $firebaseArray) {
-    var ref = new Firebase("https://scorching-torch-7698.firebaseio.com/");
-    login(ref);
+controllers.controller('mainCtrl', function($scope, $firebaseObject, dataService) {
+    var ref;
+
+    if (USE_LOCAL_DB == true) {
+        //use local mock data
+        dataService.getKHData(function(response) {
+            $scope.data = response.data.southOneonta;
+            console.log($scope.data);
+            loginSuccess('LOCAL data');
+        });
+    }
+    else {
+        //use firebase
+        ref  = new Firebase("https://scorching-torch-7698.firebaseio.com/southOneonta");
+        login(ref);
+    }
     function login(ref) {
         //firebase authentication
         ref.authWithOAuthPopup("google", function (error, authData) {
             if (error) {
                 console.log("Login Failed!", error);
+                //use local data as demo if errors
+                console.log("Using local Data");
+                dataService.getKHData(function(response){
+                    $scope.data = response.data.southOneonta;
+                    console.log($scope.data);
+                });
             } else {
+                $scope.data = $firebaseObject(ref);
                 loginSuccess(authData);
             }
         });
@@ -18,48 +39,58 @@ controllers.controller('mainCtrl', function($scope, $firebaseArray) {
     function loginSuccess(authData) {
         console.log("Authenticated successfully with payload:", authData);
 
-        console.log($firebaseArray(ref));
-
-        $scope.data = $firebaseArray(ref);
-
         var currentMonth = 6;
         var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-        //dataService.getKHData(function(response){
-        //    $scope.data = response.data;
-        //    $scope.availableOrders = response.data.available_orders;
-        //    console.log($scope.data);
-        //});
-        //
-        //$scope.save = function(postData) {
-        //    dataService.saveData(postData, function(response) {
-        //        console.log('Data sent' + JSON.stringify(postData));
-        //    });
-        //};
-
-
-        $scope.userInit = function () {
-            $scope.nameSelected = false;
+        $scope.saveQueue = [];
+        $scope.cancelAllReceivingMonths = function () {
+            $scope.saveQueue = [];
         };
 
-        $scope.queueReceiveMonth = function (user, itemName, lang, month) {
-            if ($scope.submit) {
-                var allItems = $scope.getAllItems(user);
-                for (var i = 0; i < allItems.length; i++) {
-                    if (allItems[i].name == itemName && allItems[i].language == lang) {
-                        allItems[i].months_received.push(month);
-                        return console.log("Saved stuff!");
+        $scope.queueReceiveMonth = function (itemName, lang, month, queue) {
+            if (queue) {
+                console.log("queuing");
+                $scope.saveQueue.push({itemName: itemName, lang: lang, month: month});
+                console.log($scope.saveQueue);
+            }
+            else {
+                console.log("unqueuing");
+                var saveQueue = $scope.saveQueue;
+                for (var i = 0; i < saveQueue.length; i++) {
+                    if (itemName == saveQueue[i].itemName
+                        && lang == saveQueue[i].lang
+                        && month == saveQueue[i].month)
+                    {
+                        console.log("before splice" + $scope.saveQueue);
+                        $scope.saveQueue.splice(i, 1);
+                        console.log("after splice" + $scope.saveQueue);
                     }
                 }
             }
-            return console.log("Didn't save stuff!");
+        };
+
+        $scope.finalizeReceiveMonth = function (user) {
+            var saveQueue = $scope.saveQueue;
+            console.log(saveQueue);
+            var allItems = user.orders;
+            for (var j=0;j<saveQueue.length;j++) {
+                console.log(saveQueue[j]);
+                for (var i = 0; i < allItems.length; i++) {
+                    if (allItems[i].name == saveQueue[j].itemName && allItems[i].language == saveQueue[j].lang) {
+                        allItems[i].months_received.push(saveQueue[j].month);
+                    }
+                }
+            }
+            if (!USE_LOCAL_DB){
+                data.$save()
+            }
         };
 
 
         /**
-         *
-         * @param months_received
-         * @returns {Array} of month
+         * Returns months that have not been saved as received.
+         * @param months_received from user.order[].item
+         * @returns {Array} of months
          */
         $scope.monthsNotReceived = function (months_received) {
             var return_months = [];
@@ -72,7 +103,19 @@ controllers.controller('mainCtrl', function($scope, $firebaseArray) {
             return return_months
         };
 
+        var inverse = function (months) {
+            var inverse = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+            for (var i = 0; i < months.length; i++) {
+                var index = inverse.indexOf(months[i]);
+                if (index != -1) {
+                    delete inverse[index];
+                }
+            }
+            return inverse;
+        };
+
         /**
+         * Returns true if user has at least one new item to pick up
          * @param user
          * @returns {boolean}
          */
@@ -89,11 +132,11 @@ controllers.controller('mainCtrl', function($scope, $firebaseArray) {
         };
 
         /**
-         *
+         * Returns the number of months behind the oldest item is
          * @param user
-         * @returns {*} string of "+ SomeNumber" means has item that is SomeNumber months old
+         * @returns {*} string eg. "+1" -- thus oldest item is 1 month old
          */
-        $scope.showMonthsBehindCount = function (user) {
+        $scope.getMonthsBehindCount = function (user) {
             if (!$scope.hasPendingItems(user)) {
                 return '';
             }
@@ -128,25 +171,6 @@ controllers.controller('mainCtrl', function($scope, $firebaseArray) {
                 return language;
             }
             return '';
-        };
-
-        $scope.userLangItems = function (user, language) {
-            for (var i = 0; i < user.orders.length; i++) {
-                if (user.orders[i].language == language)
-                    return user.orders[i].items;
-            }
-            return console.log("ITEMS NOT FOUND FOR " + user.fname + " " + language);
-        };
-
-        var inverse = function (months) {
-            var inverse = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-            for (var i = 0; i < months.length; i++) {
-                var index = inverse.indexOf(months[i]);
-                if (index != -1) {
-                    delete inverse[index];
-                }
-            }
-            return inverse;
         };
 
         var appDefaultLang = function () {

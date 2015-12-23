@@ -1,43 +1,45 @@
 {
-  "default_language":"English",
-  "languages":["English", "Russian", "Chinese"],
-  "available_orders":[
-    {"name":"Watchtower", "abbreviation":"WAT", "img":"images/wat_icon.jpg"},
-    {"name":"CDs", "abbreviation":"CDS", "img":"images/cds_icon.jpg"},
-    {"name":"Simplified", "abbreviation":"SIM", "img":"images/sim_icon.jpg"},
-    {"name":"Large Print", "abbreviation":"L.P.", "img":"images/lp_icon.jpg"}
-  ],
-  "users":[
-    {
-      "fname":"Jeshua",
-      "lname":"Dunham",
-      "orders": [
-            {"name":"Watchtower", "count":1, "months_received":[0,1,2,3,4], "language":"English"}
-      ]
-    },
-    {
-      "fname":"Mike",
-      "lname":"Kelly",
-      "orders": [
-            {"name":"Watchtower", "count":2, "months_received":[0,1,2,5], "language":"Chinese"},
-            {"name": "Simplified", "count":3, "months_received":[0,1,2,3,4,5,6], "language":"Chinese"}
-      ]
-    },
-    {
-      "fname":"Joe",
-      "lname":"Pfeiffer",
-      "orders": [
-            {"name":"Watchtower", "count":4, "months_received":[0,1,2,3,4], "language":"Russian"},
-            {"name": "CDs", "count":1, "months_received":[0,1,2,4], "language":"Russian"},
-            {"name": "CDs", "count":1, "months_received":[0,1,2,3,4], "language":"English"}
-      ]
-    },
-    {
-      "fname":"Craig",
-      "lname":"Ballinger",
-      "orders": [
-            {"name":"Watchtower", "count":1, "months_received":[0,1,2,3,4,5], "language":"English"}
-      ]
-    }
-  ]
+  "southOneonta":{
+    "default_language":"English",
+    "languages":["English", "Russian", "Chinese"],
+    "available_orders":[
+      {"name":"Watchtower", "abbreviation":"WAT", "img":"images/wat_icon.jpg", "inventory":[6,7,8,9,10,11,12,1,2]},
+      {"name":"CDs", "abbreviation":"CDS", "img":"images/cds_icon.jpg", "inventory":[6,7,8,9,10,11,12,1,2]},
+      {"name":"Simplified", "abbreviation":"SIM", "img":"images/sim_icon.jpg", "inventory":[6,7,8,9,10,11,12,1,2]},
+      {"name":"Large Print", "abbreviation":"L.P.", "img":"images/lp_icon.jpg", "inventory":[6,7,8,9,10,11,12,1,2]}
+    ],
+    "users":[
+      {
+        "fname":"Jeshua",
+        "lname":"Dunham",
+        "orders": [
+              {"name":"Watchtower", "count":1, "months_received":[0,1,2,3,4], "language":"English"}
+        ]
+      },
+      {
+        "fname":"Mike",
+        "lname":"Kelly",
+        "orders": [
+              {"name":"Watchtower", "count":2, "months_received":[0,1,2,5], "language":"Chinese"},
+              {"name": "Simplified", "count":3, "months_received":[0,1,2,3,4,5,6], "language":"Chinese"}
+        ]
+      },
+      {
+        "fname":"Joe",
+        "lname":"Pfeiffer",
+        "orders": [
+              {"name":"Watchtower", "count":4, "months_received":[0,1,2,3,4], "language":"Russian"},
+              {"name": "CDs", "count":1, "months_received":[0,1,2,4], "language":"Russian"},
+              {"name": "CDs", "count":1, "months_received":[0,1,2,3,4], "language":"English"}
+        ]
+      },
+      {
+        "fname":"Craig",
+        "lname":"Ballinger",
+        "orders": [
+              {"name":"Watchtower", "count":1, "months_received":[0,1,2,3,4,5], "language":"English"}
+        ]
+      }
+    ]
+  }
 }
