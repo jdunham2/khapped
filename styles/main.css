@@ -1,6 +1,7 @@
 body{
     background-color:#B4B2AE;
     color: #5F5E5D;
+    padding-bottom:10%;
 }
 #search-box {
     margin: 5%
@@ -42,6 +43,7 @@ body{
 
 .order-details {
     padding-bottom: 5%;
+    border-top: 1px solid #B4B2AE;
 }
 .finished-btn {
     margin-top: 5%;

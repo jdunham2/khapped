@@ -40,37 +40,69 @@ controllers.controller('mainCtrl', function($scope, $firebaseObject, dataService
         console.log("Authenticated successfully with payload:", authData);
 
         var currentMonth = 6;
+        var currentYear = 2016;
         var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var selectedPub;
 
-        $scope.saveQueue = [];
-        $scope.cancelAllReceivingMonths = function () {
-            $scope.saveQueue = [];
+        $scope.selectPub = function (user) {
+            if (selectedPub === user) {
+                selectedPub = '';
+            }
+            else {
+                selectedPub = user;
+            }
         };
 
-        $scope.queueReceiveMonth = function (itemName, lang, month, queue) {
-            if (queue) {
+        $scope.isSelectedPub = function (user) {
+            if (selectedPub === user) {
+                return true;
+            }
+            return false;
+        };
+
+        var saveQueue = [];
+        $scope.cancelAllReceivingMonths = function () {
+            console.log("All queues canceled");
+            saveQueue = [];
+        };
+
+        $scope.inQueue = function (itemName, lang, month) {
+            for (var i = 0; i < saveQueue.length; i++) {
+                if (itemName == saveQueue[i].itemName
+                    && lang == saveQueue[i].lang
+                    && month == saveQueue[i].month)
+                {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        $scope.queueReceiveMonth = function (itemName, lang, month) {
+            var queued = $scope.inQueue(itemName, lang, month);
+            if (!queued) {
                 console.log("queuing");
-                $scope.saveQueue.push({itemName: itemName, lang: lang, month: month});
-                console.log($scope.saveQueue);
+                saveQueue.push({itemName: itemName, lang: lang, month: month});
+                console.log(saveQueue);
+                return true;
             }
             else {
                 console.log("unqueuing");
-                var saveQueue = $scope.saveQueue;
                 for (var i = 0; i < saveQueue.length; i++) {
                     if (itemName == saveQueue[i].itemName
                         && lang == saveQueue[i].lang
                         && month == saveQueue[i].month)
                     {
-                        console.log("before splice" + $scope.saveQueue);
-                        $scope.saveQueue.splice(i, 1);
-                        console.log("after splice" + $scope.saveQueue);
+                        console.log("before splice" + saveQueue);
+                        saveQueue.splice(i, 1);
+                        console.log("after splice" + saveQueue);
                     }
                 }
+                return false;
             }
         };
 
         $scope.finalizeReceiveMonth = function (user) {
-            var saveQueue = $scope.saveQueue;
             console.log(saveQueue);
             var allItems = user.orders;
             for (var j=0;j<saveQueue.length;j++) {
@@ -84,6 +116,7 @@ controllers.controller('mainCtrl', function($scope, $firebaseObject, dataService
             if (!USE_LOCAL_DB){
                 data.$save()
             }
+            selectedPub = '';
         };
 
 

@@ -31,61 +31,58 @@
         <div class="col-sm-12">
             <h3>Publishers <small>Tap a name to select</small></h3>
         </div>
-        <div class="col-sm-10 col-sm-offset-1 publishers-container interior-content-center">
+        <div class="col-sm-10 col-sm-offset-1 interior-content-center">
             <div ng-repeat="user in data.users | filter:query | orderBy:[fname, lname]"
                  ng-init="hasPendingItems=hasPendingItems(user)"
                  class="col-xs-12 publishers-container">
                 <!--Publisher Name-->
                 <div class="col-xs-12  publisher-name"
-                     ng-click="nameSelected = !nameSelected; removed=false"
+                     ng-click="nameSelected=!nameSelected; selectPub(user, nameSelected);
+                                cancelAllReceivingMonths(); removed=false"
                      ng-class="{hasPending: hasPendingItems}">
                     {{user.fname | uppercase}} {{ user.lname | uppercase}} {{getMonthsBehindCount(user)}}
                 </div>
                 <!--Publisher Order // Hidden until name selected-->
-                <div class="col-xs-12 primaryText interior-content-left order-details" ng-show="nameSelected">
-                    <span class="col-xs-11">
+                <div class="col-xs-12 primaryText interior-content-left order-details" ng-show="isSelectedPub(user)">
+                    <div class="col-xs-12">
                         <span class="pull-right"><a href="">Customize Order</a></span>
                         <div class="row" ng-show="hasPendingItems">
                             <div class="col-xs-12" >
-                                <h4>New Items: <small>tap an item to remove it</small></h4></span>
+                                <h4>New Items: <small>tap an item to remove it</small></h4></div>
                             </div>
                         </div>
+                    <div>
                         <div class="row" ng-hide="hasPendingItems">
                             <div class="col-xs-12 interior-content-center" >
                                 <h4>No New Items!</h4>
                             </div>
                         </div>
                         <br>
-                    </span>
+                    </div>
 
-                    <div class="row">
+                    <div class="col-xs-12">
                         <br>
-                        <div class="col-xs-12">
-                            <div ng-repeat="item in getAllItems(user)">
-                                <div ng-repeat="month in monthsNotReceived(item.months_received)"
-                                     class="col-sm-5 interior-content-center itemBlock"
-                                     ng-click="removed=!removed;
-                                                queue=!queue;
-                                                queueReceiveMonth(item.name, item.language, month, queue)">
+                        <div ng-repeat="item in getAllItems(user)">
+                            <div ng-repeat="month in monthsNotReceived(item.months_received)"
+                                 class="col-sm-5 col-sm-offset-1 interior-content-center itemBlock"
+                                 ng-click="queueReceiveMonth(item.name, item.language, month)">
 
-                                    <div ng-hide="removed" id="remove">
-                                        {{monthName(month)}}
-                                        {{item.name}}
-                                        ({{item.count}}) {{showIfForeignLanguage(item.language)}}
-                                    </div>
-                                    <div ng-show="removed">
-                                        Marked received. Touch to undo.
-                                    </div>
+                                <div ng-show="!inQueue(item.name, item.language, month)">
+                                    {{monthName(month)}}
+                                    {{item.name}}
+                                    ({{item.count}}) {{showIfForeignLanguage(item.language)}}
+                                </div>
+                                <div ng-show="inQueue(item.name, item.language, month)">
+                                    Marked received. Touch to undo.
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <button class="col-xs-2 col-xs-offset-3 btn btn-default finished-btn"
-                                ng-click="nameSelected=!nameSelected; finalizeReceiveMonth(user)">Save</button>
-                        <button class="col-xs-2 col-xs-offset-2 btn btn-default finished-btn"
-                                ng-click="nameSelected=!nameSelected; cancelAllReceivingMonths()">Cancel</button>
+                        <button class="col-xs-4 col-xs-offset-4 btn btn-default finished-btn"
+                                ng-click="nameSelected=!nameSelected; $parent.finalizeReceiveMonth(user)">
+                            Save</button>
                     </div>
                 </div>
             </div>
